@@ -7,11 +7,13 @@ using System.Text.RegularExpressions;
 using System.Web;
 using ICSharpCode.SharpZipLib.Zip;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Office.Interop.Excel;
-using Microsoft.Office.Interop.PowerPoint;
-using Microsoft.Office.Interop.Word;
-using Office;
-using Application = Microsoft.Office.Interop.Word.Application;
+using NetOffice.ExcelApi;
+using NetOffice.ExcelApi.Enums;
+using NetOffice.OfficeApi.Enums;
+using NetOffice.PowerPointApi;
+using NetOffice.PowerPointApi.Enums;
+using NetOffice.WordApi;
+using NetOffice.WordApi.Enums;
 //using Microsoft.Office.Core;
 
 
@@ -55,7 +57,7 @@ namespace DocumentViewerCore.Common
         {
             try
             {
-                var wordApp = new Application();
+                var wordApp = new NetOffice.WordApi.Application();
                 Document currentDoc = wordApp.Documents.Open(sourcePath);
                 currentDoc.SaveAs(targetPath, WdSaveFormat.wdFormatFilteredHTML);
                 currentDoc.Close();
@@ -80,7 +82,7 @@ namespace DocumentViewerCore.Common
         {
             try
             {
-                var excelApp = new Microsoft.Office.Interop.Excel.Application();
+                var excelApp = new NetOffice.ExcelApi.Application();
                 Workbook workbook = excelApp.Application.Workbooks.Open(sourcePath);
                 workbook.SaveAs(targetPath, XlFileFormat.xlHtml);
                 workbook.Close();
@@ -108,7 +110,7 @@ namespace DocumentViewerCore.Common
                 #region 先转换为图片，再由图片组成Html页面
 
                 var sourceFile = new FileInfo(sourcePath);
-                var powerPoint = new Microsoft.Office.Interop.PowerPoint.Application();
+                var powerPoint = new NetOffice.PowerPointApi.Application();
                 Presentation open = powerPoint.Presentations.Open(sourcePath, MsoTriState.msoTrue,  MsoTriState.msoFalse, MsoTriState.msoFalse);
 
                 //注意：有些版本的PowerPoint(如：Office 2013 Professional)不能保存为Html，
@@ -342,7 +344,7 @@ namespace DocumentViewerCore.Common
         /// <param name="content"></param> 
         public static void Log(string title, string content)
         {
-            var logPath = HttpContext.Current.Server.MapPath("~/log.txt");
+            var logPath = HttpContextHelper.MapPath("~/log.txt");
             using (StreamWriter w = File.AppendText(logPath))
             {
                 w.WriteLine("# " + DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss ") + content);

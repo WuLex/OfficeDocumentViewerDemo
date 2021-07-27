@@ -5,14 +5,20 @@
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\admin\.nuget\packages\</NuGetPackageFolders>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\acer\.nuget\packages\;C:\Program Files\dotnet\sdk\NuGetFallbackFolder</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.9.1</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.8.0</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <SourceRoot Include="C:\Users\admin\.nuget\packages\" />
+    <SourceRoot Include="$([MSBuild]::EnsureTrailingSlash($(NuGetPackageFolders)))" />
   </ItemGroup>
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgNetOffice_Core Condition=" '$(PkgNetOffice_Core)' == '' ">C:\Users\acer\.nuget\packages\netoffice.core\1.7.4.11</PkgNetOffice_Core>
+    <PkgNetOffice_Word Condition=" '$(PkgNetOffice_Word)' == '' ">C:\Users\acer\.nuget\packages\netoffice.word\1.7.4.11</PkgNetOffice_Word>
+    <PkgNetOffice_PowerPoint Condition=" '$(PkgNetOffice_PowerPoint)' == '' ">C:\Users\acer\.nuget\packages\netoffice.powerpoint\1.7.4.11</PkgNetOffice_PowerPoint>
+    <PkgNetOffice_Excel Condition=" '$(PkgNetOffice_Excel)' == '' ">C:\Users\acer\.nuget\packages\netoffice.excel\1.7.4.11</PkgNetOffice_Excel>
   </PropertyGroup>
 </Project>

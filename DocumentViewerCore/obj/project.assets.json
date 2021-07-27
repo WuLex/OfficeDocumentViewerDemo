@@ -2,31 +2,53 @@
   "version": 3,
   "targets": {
     "net5.0": {
-      "Microsoft.Office.Interop.Excel/15.0.4795.1000": {
+      "NetOffice.Core/1.7.4.11": {
         "type": "package",
         "compile": {
-          "lib/net20/Microsoft.Office.Interop.Excel.dll": {}
+          "lib/net45/NetOffice.dll": {},
+          "lib/net45/OfficeApi.dll": {},
+          "lib/net45/VBIDEApi.dll": {}
         },
         "runtime": {
-          "lib/net20/Microsoft.Office.Interop.Excel.dll": {}
+          "lib/net45/NetOffice.dll": {},
+          "lib/net45/OfficeApi.dll": {},
+          "lib/net45/VBIDEApi.dll": {}
         }
       },
-      "Microsoft.Office.Interop.PowerPoint/15.0.4420.1017": {
+      "NetOffice.Excel/1.7.4.11": {
         "type": "package",
+        "dependencies": {
+          "NetOffice.Core": "1.7.4.11"
+        },
         "compile": {
-          "lib/net20/Microsoft.Office.Interop.PowerPoint.dll": {}
+          "lib/net45/ExcelApi.dll": {}
         },
         "runtime": {
-          "lib/net20/Microsoft.Office.Interop.PowerPoint.dll": {}
+          "lib/net45/ExcelApi.dll": {}
         }
       },
-      "Microsoft.Office.Interop.Word/15.0.4797.1003": {
+      "NetOffice.PowerPoint/1.7.4.11": {
         "type": "package",
+        "dependencies": {
+          "NetOffice.Core": "1.7.4.11"
+        },
         "compile": {
-          "lib/net20/Microsoft.Office.Interop.Word.dll": {}
+          "lib/net45/PowerPointApi.dll": {}
         },
         "runtime": {
-          "lib/net20/Microsoft.Office.Interop.Word.dll": {}
+          "lib/net45/PowerPointApi.dll": {}
+        }
+      },
+      "NetOffice.Word/1.7.4.11": {
+        "type": "package",
+        "dependencies": {
+          "NetOffice.Core": "1.7.4.11"
+        },
+        "compile": {
+          "lib/net45/WordApi.dll": {}
+        },
+        "runtime": {
+          "lib/net45/WordApi.dll": {}
         }
       },
       "SharpZipLib/1.3.2": {
@@ -41,40 +63,116 @@
     }
   },
   "libraries": {
-    "Microsoft.Office.Interop.Excel/15.0.4795.1000": {
-      "sha512": "DfceS96ustwfL8EOJNNRtpk6b0RylhjNpgeeemuvi9X4GYks2UTeAimjSrdFEfuqRo5ibZ4Sd0gJIeDr9gMa6Q==",
+    "NetOffice.Core/1.7.4.11": {
+      "sha512": "voWeYFBjBET6y0kugZ7LUCJHBtT/ox/JFEscRdyqDXyooVdY246d19wVMr1ftXXD+30k5ZiClIGZbpOxHLFp0A==",
       "type": "package",
-      "path": "microsoft.office.interop.excel/15.0.4795.1000",
+      "path": "netoffice.core/1.7.4.11",
+      "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net20/Microsoft.Office.Interop.Excel.dll",
-        "microsoft.office.interop.excel.15.0.4795.1000.nupkg.sha512",
-        "microsoft.office.interop.excel.nuspec"
+        "lib/net20/NetOffice.dll",
+        "lib/net20/NetOffice.xml",
+        "lib/net20/OfficeApi.dll",
+        "lib/net20/OfficeApi.xml",
+        "lib/net20/VBIDEApi.dll",
+        "lib/net20/VBIDEApi.xml",
+        "lib/net30/NetOffice.dll",
+        "lib/net30/NetOffice.xml",
+        "lib/net30/OfficeApi.dll",
+        "lib/net30/OfficeApi.xml",
+        "lib/net30/VBIDEApi.dll",
+        "lib/net30/VBIDEApi.xml",
+        "lib/net35/NetOffice.dll",
+        "lib/net35/NetOffice.xml",
+        "lib/net35/OfficeApi.dll",
+        "lib/net35/OfficeApi.xml",
+        "lib/net35/VBIDEApi.dll",
+        "lib/net35/VBIDEApi.xml",
+        "lib/net40/NetOffice.dll",
+        "lib/net40/NetOffice.xml",
+        "lib/net40/OfficeApi.dll",
+        "lib/net40/OfficeApi.xml",
+        "lib/net40/VBIDEApi.dll",
+        "lib/net40/VBIDEApi.xml",
+        "lib/net45/NetOffice.dll",
+        "lib/net45/NetOffice.xml",
+        "lib/net45/OfficeApi.dll",
+        "lib/net45/OfficeApi.xml",
+        "lib/net45/VBIDEApi.dll",
+        "lib/net45/VBIDEApi.xml",
+        "netoffice.core.1.7.4.11.nupkg.sha512",
+        "netoffice.core.nuspec",
+        "tools/install.ps1"
       ]
     },
-    "Microsoft.Office.Interop.PowerPoint/15.0.4420.1017": {
-      "sha512": "8/C095a6ojqtWJzLFPYbHAjBM6C4koAcZ4NW50N1L7HHsFAAqN1RpEhE8tFry2fjJLMwz1hYOm2A4MS9DS7n2A==",
+    "NetOffice.Excel/1.7.4.11": {
+      "sha512": "pEGj7uPzw8M0Dj1qj39f+/Z8cJNqBoosGM4u3OKw7o878MTurFTwfx5U+9VMv8NFB1XeNNuVyv857qZwO9eLKA==",
       "type": "package",
-      "path": "microsoft.office.interop.powerpoint/15.0.4420.1017",
+      "path": "netoffice.excel/1.7.4.11",
+      "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net20/Microsoft.Office.Interop.PowerPoint.dll",
-        "microsoft.office.interop.powerpoint.15.0.4420.1017.nupkg.sha512",
-        "microsoft.office.interop.powerpoint.nuspec"
+        "lib/net20/ExcelApi.dll",
+        "lib/net20/ExcelApi.xml",
+        "lib/net30/ExcelApi.dll",
+        "lib/net30/ExcelApi.xml",
+        "lib/net35/ExcelApi.dll",
+        "lib/net35/ExcelApi.xml",
+        "lib/net40/ExcelApi.dll",
+        "lib/net40/ExcelApi.xml",
+        "lib/net45/ExcelApi.dll",
+        "lib/net45/ExcelApi.xml",
+        "netoffice.excel.1.7.4.11.nupkg.sha512",
+        "netoffice.excel.nuspec",
+        "tools/install.ps1"
       ]
     },
-    "Microsoft.Office.Interop.Word/15.0.4797.1003": {
-      "sha512": "p22pljmHaQjDxNLqO+uO5vi3y0TK5t1mAtSAg93K28/e12Hw3qzfflAo6XHvNXxnvz9HZGv59vLCwIaC9xbXNQ==",
+    "NetOffice.PowerPoint/1.7.4.11": {
+      "sha512": "xWHk5ECpV/CLtlPAwII6WRvMi7qHU8GB63EsvUqAHatokBQWOQD17//GL/eXWmexLzCVTa76rYvvdUZsk1eCpA==",
       "type": "package",
-      "path": "microsoft.office.interop.word/15.0.4797.1003",
+      "path": "netoffice.powerpoint/1.7.4.11",
+      "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net20/Microsoft.Office.Interop.Word.dll",
-        "microsoft.office.interop.word.15.0.4797.1003.nupkg.sha512",
-        "microsoft.office.interop.word.nuspec"
+        "lib/net20/PowerPointApi.dll",
+        "lib/net20/PowerPointApi.xml",
+        "lib/net30/PowerPointApi.dll",
+        "lib/net30/PowerPointApi.xml",
+        "lib/net35/PowerPointApi.dll",
+        "lib/net35/PowerPointApi.xml",
+        "lib/net40/PowerPointApi.dll",
+        "lib/net40/PowerPointApi.xml",
+        "lib/net45/PowerPointApi.dll",
+        "lib/net45/PowerPointApi.xml",
+        "netoffice.powerpoint.1.7.4.11.nupkg.sha512",
+        "netoffice.powerpoint.nuspec",
+        "tools/install.ps1"
+      ]
+    },
+    "NetOffice.Word/1.7.4.11": {
+      "sha512": "4JdykhEmFfHuf18PbvbP1mKC60RT5D5PIRYyTz85IshjEQVonAmp6fn4k63niM/pliNVYkh/xDENAEQOLQjkJw==",
+      "type": "package",
+      "path": "netoffice.word/1.7.4.11",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/WordApi.dll",
+        "lib/net20/WordApi.xml",
+        "lib/net30/WordApi.dll",
+        "lib/net30/WordApi.xml",
+        "lib/net35/WordApi.dll",
+        "lib/net35/WordApi.xml",
+        "lib/net40/WordApi.dll",
+        "lib/net40/WordApi.xml",
+        "lib/net45/WordApi.dll",
+        "lib/net45/WordApi.xml",
+        "netoffice.word.1.7.4.11.nupkg.sha512",
+        "netoffice.word.nuspec",
+        "tools/install.ps1"
       ]
     },
     "SharpZipLib/1.3.2": {
@@ -101,26 +199,31 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "Microsoft.Office.Interop.Excel >= 15.0.4795.1000",
-      "Microsoft.Office.Interop.PowerPoint >= 15.0.4420.1017",
-      "Microsoft.Office.Interop.Word >= 15.0.4797.1003",
+      "NetOffice.Core >= 1.7.4.11",
+      "NetOffice.Excel >= 1.7.4.11",
+      "NetOffice.PowerPoint >= 1.7.4.11",
+      "NetOffice.Word >= 1.7.4.11",
       "SharpZipLib >= 1.3.2"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\acer\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\mynetcoreproject\\DocumentViewerCore\\DocumentViewerCore\\DocumentViewerCore.csproj",
+      "projectUniqueName": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
       "projectName": "DocumentViewerCore",
-      "projectPath": "D:\\mynetcoreproject\\DocumentViewerCore\\DocumentViewerCore\\DocumentViewerCore.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "D:\\mynetcoreproject\\DocumentViewerCore\\DocumentViewerCore\\obj\\",
+      "projectPath": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
+      "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
+      "outputPath": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -146,17 +249,21 @@
       "net5.0": {
         "targetAlias": "net5.0",
         "dependencies": {
-          "Microsoft.Office.Interop.Excel": {
+          "NetOffice.Core": {
             "target": "Package",
-            "version": "[15.0.4795.1000, )"
+            "version": "[1.7.4.11, )"
           },
-          "Microsoft.Office.Interop.PowerPoint": {
+          "NetOffice.Excel": {
             "target": "Package",
-            "version": "[15.0.4420.1017, )"
+            "version": "[1.7.4.11, )"
           },
-          "Microsoft.Office.Interop.Word": {
+          "NetOffice.PowerPoint": {
             "target": "Package",
-            "version": "[15.0.4797.1003, )"
+            "version": "[1.7.4.11, )"
+          },
+          "NetOffice.Word": {
+            "target": "Package",
+            "version": "[1.7.4.11, )"
           },
           "SharpZipLib": {
             "target": "Package",
@@ -181,7 +288,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   },
@@ -190,8 +297,8 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“net5.0”还原包“Microsoft.Office.Interop.Excel 15.0.4795.1000”。此包可能与项目不完全兼容。",
-      "libraryId": "Microsoft.Office.Interop.Excel",
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“net5.0”还原包“NetOffice.Core 1.7.4.11”。此包可能与项目不完全兼容。",
+      "libraryId": "NetOffice.Core",
       "targetGraphs": [
         "net5.0"
       ]
@@ -200,8 +307,8 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“net5.0”还原包“Microsoft.Office.Interop.PowerPoint 15.0.4420.1017”。此包可能与项目不完全兼容。",
-      "libraryId": "Microsoft.Office.Interop.PowerPoint",
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“net5.0”还原包“NetOffice.Excel 1.7.4.11”。此包可能与项目不完全兼容。",
+      "libraryId": "NetOffice.Excel",
       "targetGraphs": [
         "net5.0"
       ]
@@ -210,8 +317,18 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“net5.0”还原包“Microsoft.Office.Interop.Word 15.0.4797.1003”。此包可能与项目不完全兼容。",
-      "libraryId": "Microsoft.Office.Interop.Word",
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“net5.0”还原包“NetOffice.PowerPoint 1.7.4.11”。此包可能与项目不完全兼容。",
+      "libraryId": "NetOffice.PowerPoint",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“net5.0”还原包“NetOffice.Word 1.7.4.11”。此包可能与项目不完全兼容。",
+      "libraryId": "NetOffice.Word",
       "targetGraphs": [
         "net5.0"
       ]
