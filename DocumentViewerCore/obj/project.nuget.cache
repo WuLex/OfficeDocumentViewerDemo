@@ -1,14 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "bceWwjLPMKJg2FLnOBDYASeojgwwX49SzagAf9FW7uVbkcwovRdyBB6hLFGv4SC/MXMiqloJ+fBvPJ2dokx/9w==",
+  "dgSpecHash": "GfK7kVr+5PLj4tOH9tkKkRtd+5J1E02NjuZtLHqhPLxzUdtQpcMx5PP3PPoX1BwYrSZ8sPNueMESzJck9+DY3g==",
   "success": true,
-  "projectFilePath": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
+  "projectFilePath": "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\acer\\.nuget\\packages\\netoffice.core\\1.7.4.11\\netoffice.core.1.7.4.11.nupkg.sha512",
-    "C:\\Users\\acer\\.nuget\\packages\\netoffice.excel\\1.7.4.11\\netoffice.excel.1.7.4.11.nupkg.sha512",
-    "C:\\Users\\acer\\.nuget\\packages\\netoffice.powerpoint\\1.7.4.11\\netoffice.powerpoint.1.7.4.11.nupkg.sha512",
-    "C:\\Users\\acer\\.nuget\\packages\\netoffice.word\\1.7.4.11\\netoffice.word.1.7.4.11.nupkg.sha512",
-    "C:\\Users\\acer\\.nuget\\packages\\sharpziplib\\1.3.2\\sharpziplib.1.3.2.nupkg.sha512"
+    "C:\\Users\\admin\\.nuget\\packages\\netoffice.core\\1.7.4.11\\netoffice.core.1.7.4.11.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\netoffice.excel\\1.7.4.11\\netoffice.excel.1.7.4.11.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\netoffice.powerpoint\\1.7.4.11\\netoffice.powerpoint.1.7.4.11.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\netoffice.word\\1.7.4.11\\netoffice.word.1.7.4.11.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\sharpziplib\\1.3.2\\sharpziplib.1.3.2.nupkg.sha512"
   ],
   "logs": [
     {

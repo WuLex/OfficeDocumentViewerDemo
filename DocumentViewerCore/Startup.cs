@@ -45,7 +45,7 @@ namespace DocumentViewerCore
             }
 
 
-             HttpContextHelper.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
+            HttpContextHelper.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
             HttpContextHelper.Configure(app.ApplicationServices.GetRequiredService<IWebHostEnvironment>());
 
             app.UseHttpsRedirection();
