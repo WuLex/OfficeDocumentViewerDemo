@@ -13,7 +13,7 @@ namespace DocumentViewerCore.Common
         private static IWebHostEnvironment _wevHostEnviroment;
         public static string WebPath => _wevHostEnviroment.WebRootPath;
 
-      
+
         public static void Configure(Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor)
         {
             m_httpContextAccessor = httpContextAccessor;
@@ -34,9 +34,8 @@ namespace DocumentViewerCore.Common
 
         public static string MapPath(string path)
         {
-            return Path.Combine(_wevHostEnviroment.WebRootPath, path);
+            return Path.Combine(_wevHostEnviroment.WebRootPath + path,"");
         }
-
-
+       
     }
 }

@@ -12,7 +12,12 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DocumentViewerCore.Common;
 using Microsoft.AspNetCore.Http;
-using System.IO;
+using Microsoft.AspNetCore.Http.Extensions;
+using System.Security;
+using System.Net.Security;
+using System.Security.Authentication;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DocumentViewerCore.Controllers
 {
@@ -20,7 +25,7 @@ namespace DocumentViewerCore.Controllers
     {
         protected string DocumentDirName = "Documents";
 
-     
+
 
         private readonly ILogger<HomeController> _logger;
 
@@ -29,8 +34,9 @@ namespace DocumentViewerCore.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string url)
         {
+            Page_Load();
             return View();
         }
 
@@ -45,12 +51,12 @@ namespace DocumentViewerCore.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load()
         {
-            if (!IsPostBack)
+            if (!HttpContext.Request.IsPostBack())
             {
                 string url = HttpContext.Request.Query["url"];
                 if (!string.IsNullOrEmpty(url))
@@ -59,21 +65,21 @@ namespace DocumentViewerCore.Controllers
                     {
                         string extension = url.Substring(url.LastIndexOf('.'));
                         string fileName = url.Substring(url.LastIndexOf('/') + 1);
-                        string filePath = Path.Combine(Server.MapPath("~/" + DocumentDirName + "/"), fileName);
+                        string filePath = Path.Combine(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\"), fileName);
                         string targetConvertDirPath =
-                            Server.MapPath(string.Format("~/{0}/ConvertHtml", DocumentDirName));
+                            HttpContextHelper.MapPath(string.Format("\\{0}\\ConvertHtml", DocumentDirName));
                         //目标文件路径
-                        var targetConvertFilePath = string.Format("{0}/ConvertHtml/{1}.htm", DocumentDirName, fileName);
-                        var targetPath = Server.MapPath("~/" + targetConvertFilePath);
-                        if (File.Exists(Server.MapPath("~/" + targetConvertFilePath)))
+                        var targetConvertFilePath = string.Format("{0}\\ConvertHtml\\{1}.htm", DocumentDirName, fileName);
+                        var targetPath = HttpContextHelper.MapPath("\\" + targetConvertFilePath);
+                        if (System.IO.File.Exists(HttpContextHelper.MapPath("\\" + targetConvertFilePath)))
                         {
                             #region 如果文件已存在
 
-                            Uri uri = HttpContext.Current.Request.Url;
+                            Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
                             string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
                             string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
                             //Response.Redirect("Preview.aspx?url=" + webUrl + targetConvertFilePath + "&source=" + url);
-                            Response.Redirect(string.Format("Preview.aspx?url={0}{1}&source={2}", webUrl,
+                            Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
                                 (BasePath + targetConvertFilePath).Replace("//", "/").TrimStart('/'), url));
 
                             #endregion
@@ -84,13 +90,35 @@ namespace DocumentViewerCore.Controllers
 
                             try
                             {
-                                var webClient = new WebClient();
-                                if (!Directory.Exists(Server.MapPath("~/" + DocumentDirName + "/")))
+                                Uri address = new Uri(url);
+
+                                ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
+                                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
+
+                                using (WebClient webClient = new WebClient())
                                 {
-                                    Directory.CreateDirectory(Server.MapPath("~/" + DocumentDirName + "/"));
+                                    webClient.DownloadFile(url, filePath);
+                                    //var stream = webClient.OpenRead(address);
+                                    //using (StreamReader sr = new StreamReader(stream))
+                                    //{
+                                    //    var page = sr.ReadToEnd();
+                                    //}
                                 }
 
-                                webClient.DownloadFile(url, filePath);
+
+
+                                //using (var webClient = new WebClient())
+                                //{
+                                //    if (!Directory.Exists(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\")))
+                                //    {
+                                //        Directory.CreateDirectory(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\"));
+                                //    }
+                                //    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                                //    webClient.DownloadFile(url, filePath);
+
+                                   
+                                //}
+
                             }
                             catch (Exception ex)
                             {
@@ -99,7 +127,7 @@ namespace DocumentViewerCore.Controllers
 
                             #endregion
 
-                            if (File.Exists(filePath))
+                            if (System.IO.File.Exists(filePath))
                             {
                                 #region  第二步：转换文件
 
@@ -109,9 +137,9 @@ namespace DocumentViewerCore.Controllers
                                     Directory.CreateDirectory(targetConvertDirPath);
                                 }
 
-                                if (File.Exists(targetConvertFilePath))
+                                if (System.IO.File.Exists(targetConvertFilePath))
                                 {
-                                    File.Delete(targetConvertFilePath);
+                                    System.IO.File.Delete(targetConvertFilePath);
                                 }
 
                                 OfficeConverter.ConvertResult result;
@@ -187,7 +215,7 @@ namespace DocumentViewerCore.Controllers
 
                                 if (result.IsSuccess)
                                 {
-                                    Uri uri = HttpContext.Current.Request.Url;
+                                    Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
                                     string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
                                     string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
                                     Response.Redirect(string.Format("Preview.aspx?url={0}{1}&source={2}", webUrl,
@@ -221,9 +249,27 @@ namespace DocumentViewerCore.Controllers
             Response.WriteAsync(msgage);
         }
 
-        public static string BasePath
+        public string BasePath
         {
-            get { return VirtualPathUtility.AppendTrailingSlash(HttpContext.Request.); }
+            get { return HttpContextHelper.MapPath(HttpContext.Request.Path); }
+        }
+
+        /// <summary>
+        /// Certificate validation callback.
+        /// </summary>
+        private static bool ValidateRemoteCertificate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
+        {
+            // If the certificate is a valid, signed certificate, return true.
+            if (error == System.Net.Security.SslPolicyErrors.None)
+            {
+                return true;
+            }
+
+            Console.WriteLine("X509Certificate [{0}] Policy Error: '{1}'",
+                cert.Subject,
+                error.ToString());
+
+            return false;
         }
     }
 }

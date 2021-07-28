@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj": {}
+    "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj": {}
   },
   "projects": {
-    "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj": {
+    "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
+        "projectUniqueName": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
         "projectName": "DocumentViewerCore",
-        "projectPath": "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\obj\\",
+        "projectPath": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
+        "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
+        "outputPath": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -59,6 +62,10 @@
             "SharpZipLib": {
               "target": "Package",
               "version": "[1.3.2, )"
+            },
+            "System.Security.Cryptography.X509Certificates": {
+              "target": "Package",
+              "version": "[4.3.2, )"
             }
           },
           "imports": [
@@ -79,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
