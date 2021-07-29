@@ -32,20 +32,14 @@ namespace DocumentViewerCore.Common
 
         #endregion
 
-        protected static string CommonFileInclude
-        {
-            get
-            {
-                return
-                    string.Format("<link type='text/css' rel='stylesheet' href='../../style/common.css'/>" +
-                                  Environment.NewLine +
-                                  "<script type='text/javascript' src='../../scripts/jquery-1.7.1.js'></script>" +
-                                  Environment.NewLine +
-                                  "<script type='text/javascript' src='../../scripts/common.js'></script>" +
-                                  Environment.NewLine
-                    );
-            }
-        }
+        protected static string CommonFileInclude =>
+            string.Format("<link type='text/css' rel='stylesheet' href='../../style/common.css'/>" +
+                          Environment.NewLine +
+                          "<script type='text/javascript' src='../../scripts/jquery-1.7.1.js'></script>" +
+                          Environment.NewLine +
+                          "<script type='text/javascript' src='../../scripts/common.js'></script>" +
+                          Environment.NewLine
+            );
 
         /// <summary>
         ///     转换Word文档成Html文档

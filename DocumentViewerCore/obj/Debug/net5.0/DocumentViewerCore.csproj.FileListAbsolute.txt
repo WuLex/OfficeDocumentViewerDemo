@@ -59,7 +59,6 @@ D:\mynetcoreproject\OfficeDocumentViewerDemo\DocumentViewerCore\bin\Debug\net5.0
 D:\mynetcoreproject\OfficeDocumentViewerDemo\DocumentViewerCore\bin\Debug\net5.0\PowerPointApi.dll
 D:\mynetcoreproject\OfficeDocumentViewerDemo\DocumentViewerCore\bin\Debug\net5.0\WordApi.dll
 D:\mynetcoreproject\OfficeDocumentViewerDemo\DocumentViewerCore\bin\Debug\net5.0\ICSharpCode.SharpZipLib.dll
-D:\mynetcoreproject\OfficeDocumentViewerDemo\DocumentViewerCore\obj\Debug\net5.0\DocumentViewerCore.csprojAssemblyReference.cache
 D:\mynetcoreproject\OfficeDocumentViewerDemo\DocumentViewerCore\obj\Debug\net5.0\DocumentViewerCore.GeneratedMSBuildEditorConfig.editorconfig
 D:\mynetcoreproject\OfficeDocumentViewerDemo\DocumentViewerCore\obj\Debug\net5.0\DocumentViewerCore.AssemblyInfoInputs.cache
 D:\mynetcoreproject\OfficeDocumentViewerDemo\DocumentViewerCore\obj\Debug\net5.0\DocumentViewerCore.AssemblyInfo.cs
@@ -137,3 +136,4 @@ E:\mynetcoreProject\OfficeDocumentViewerDemo\DocumentViewerCore\obj\Debug\net5.0
 E:\mynetcoreProject\OfficeDocumentViewerDemo\DocumentViewerCore\obj\Debug\net5.0\ref\DocumentViewerCore.dll
 E:\mynetcoreProject\OfficeDocumentViewerDemo\DocumentViewerCore\obj\Debug\net5.0\DocumentViewerCore.pdb
 E:\mynetcoreProject\OfficeDocumentViewerDemo\DocumentViewerCore\obj\Debug\net5.0\DocumentViewerCore.genruntimeconfig.cache
+D:\mynetcoreproject\OfficeDocumentViewerDemo\DocumentViewerCore\obj\Debug\net5.0\DocumentViewerCore.csprojAssemblyReference.cache

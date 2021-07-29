@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj": {}
+    "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj": {}
   },
   "projects": {
-    "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj": {
+    "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
+        "projectUniqueName": "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
         "projectName": "DocumentViewerCore",
-        "projectPath": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
-        "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
-        "outputPath": "E:\\mynetcoreProject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\obj\\",
+        "projectPath": "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\DocumentViewerCore.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "D:\\mynetcoreproject\\OfficeDocumentViewerDemo\\DocumentViewerCore\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -86,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

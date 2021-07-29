@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DocumentViewerCore.Common;
@@ -25,13 +26,14 @@ namespace DocumentViewerCore.Controllers
     {
         protected string DocumentDirName = "Documents";
 
-
+        protected readonly IHttpClientFactory _httpClientFactory;
 
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
+            _httpClientFactory = httpClientFactory;
         }
 
         public IActionResult Index(string url)
@@ -42,7 +44,6 @@ namespace DocumentViewerCore.Controllers
 
         public IActionResult Preview()
         {
-
             ViewBag.Url = HttpContext.Request.Query["url"];
             ViewBag.Source = HttpContext.Request.Query["source"];
             return View();
@@ -51,7 +52,7 @@ namespace DocumentViewerCore.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
         protected void Page_Load()
@@ -65,12 +66,15 @@ namespace DocumentViewerCore.Controllers
                     {
                         string extension = url.Substring(url.LastIndexOf('.'));
                         string fileName = url.Substring(url.LastIndexOf('/') + 1);
-                        string filePath = Path.Combine(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\"), fileName);
+                        string filePath = Path.Combine(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\"),
+                            fileName);
                         string targetConvertDirPath =
                             HttpContextHelper.MapPath(string.Format("\\{0}\\ConvertHtml", DocumentDirName));
                         //目标文件路径
-                        var targetConvertFilePath = string.Format("{0}\\ConvertHtml\\{1}.htm", DocumentDirName, fileName);
+                        var targetConvertFilePath =
+                            string.Format("{0}\\ConvertHtml\\{1}.htm", DocumentDirName, fileName);
                         var targetPath = HttpContextHelper.MapPath("\\" + targetConvertFilePath);
+
                         if (System.IO.File.Exists(HttpContextHelper.MapPath("\\" + targetConvertFilePath)))
                         {
                             #region 如果文件已存在
@@ -78,9 +82,8 @@ namespace DocumentViewerCore.Controllers
                             Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
                             string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
                             string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
-                            //Response.Redirect("Preview.aspx?url=" + webUrl + targetConvertFilePath + "&source=" + url);
                             Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
-                                (BasePath + targetConvertFilePath).Replace("//", "/").TrimStart('/'), url));
+                                (targetConvertFilePath).Replace("\\", "/").TrimStart('/'), url));
 
                             #endregion
                         }
@@ -91,20 +94,23 @@ namespace DocumentViewerCore.Controllers
                             try
                             {
                                 Uri address = new Uri(url);
+                                var client = _httpClientFactory.CreateClient();
+                                var stream = client.GetStreamAsync(address);
 
-                                ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
-                                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
+                                FileDownSave(url, filePath);
+                                //return File(stream, "application/vnd.android.package-archive", Path.GetFileName(targetPath));
 
-                                using (WebClient webClient = new WebClient())
-                                {
-                                    webClient.DownloadFile(url, filePath);
-                                    //var stream = webClient.OpenRead(address);
-                                    //using (StreamReader sr = new StreamReader(stream))
-                                    //{
-                                    //    var page = sr.ReadToEnd();
-                                    //}
-                                }
-
+                                //ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
+                                //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
+                                //using (WebClient webClient = new WebClient())
+                                //{
+                                //    webClient.DownloadFile(url, filePath);
+                                //    //var stream = webClient.OpenRead(address);
+                                //    //using (StreamReader sr = new StreamReader(stream))
+                                //    //{
+                                //    //    var page = sr.ReadToEnd();
+                                //    //}
+                                //}
 
 
                                 //using (var webClient = new WebClient())
@@ -116,9 +122,8 @@ namespace DocumentViewerCore.Controllers
                                 //    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                                 //    webClient.DownloadFile(url, filePath);
 
-                                   
-                                //}
 
+                                //}
                             }
                             catch (Exception ex)
                             {
@@ -137,9 +142,9 @@ namespace DocumentViewerCore.Controllers
                                     Directory.CreateDirectory(targetConvertDirPath);
                                 }
 
-                                if (System.IO.File.Exists(targetConvertFilePath))
+                                if (System.IO.File.Exists(targetPath))
                                 {
-                                    System.IO.File.Delete(targetConvertFilePath);
+                                    System.IO.File.Delete(targetPath);
                                 }
 
                                 OfficeConverter.ConvertResult result;
@@ -218,8 +223,8 @@ namespace DocumentViewerCore.Controllers
                                     Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
                                     string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
                                     string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
-                                    Response.Redirect(string.Format("Preview.aspx?url={0}{1}&source={2}", webUrl,
-                                        (BasePath + targetConvertFilePath).Replace("//", "/").TrimStart('/'), url));
+                                    Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
+                                        (targetConvertFilePath).Replace("//", "/").TrimStart('/'), url));
                                 }
                                 else
                                 {
@@ -255,21 +260,34 @@ namespace DocumentViewerCore.Controllers
         }
 
         /// <summary>
-        /// Certificate validation callback.
+        /// 下载并保存
         /// </summary>
-        private static bool ValidateRemoteCertificate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
+        /// <param name="url">网络路径</param>
+        /// <param name="savePath">保存本地的文件夹</param>
+        public void FileDownSave(string url, string savePath)
         {
-            // If the certificate is a valid, signed certificate, return true.
-            if (error == System.Net.Security.SslPolicyErrors.None)
+            if (!string.IsNullOrWhiteSpace(url))
             {
-                return true;
+                string[] strArry = url.Split('/');
+                //savePath = savePath + "/" + strArry[strArry.Length - 1];
             }
 
-            Console.WriteLine("X509Certificate [{0}] Policy Error: '{1}'",
-                cert.Subject,
-                error.ToString());
+            var httpClient = _httpClientFactory.CreateClient() ?? new HttpClient();
 
-            return false;
+            var t = httpClient.GetByteArrayAsync(url);
+            t.Wait();
+            Stream responseStream = new MemoryStream(t.Result);
+            Stream stream = new FileStream(savePath, FileMode.Create);
+            byte[] bArr = new byte[1024];
+            int size = responseStream.Read(bArr, 0, bArr.Length);
+            while (size > 0)
+            {
+                stream.Write(bArr, 0, size);
+                size = responseStream.Read(bArr, 0, bArr.Length);
+            }
+
+            stream.Close();
+            responseStream.Close();
         }
     }
 }
