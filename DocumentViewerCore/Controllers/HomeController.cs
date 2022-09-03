@@ -19,6 +19,8 @@ using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using Aspose.Words;
+using System.Text;
 
 namespace DocumentViewerCore.Controllers
 {
@@ -38,7 +40,7 @@ namespace DocumentViewerCore.Controllers
 
         public IActionResult Index(string url)
         {
-            Page_Load();
+            Load();
             return View();
         }
 
@@ -55,194 +57,201 @@ namespace DocumentViewerCore.Controllers
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
-        protected void Page_Load()
+        protected void Load()
         {
-            if (!HttpContext.Request.IsPostBack())
+            string url = HttpContext.Request.Query["url"];
+            if (!string.IsNullOrEmpty(url))
             {
-                string url = HttpContext.Request.Query["url"];
-                if (!string.IsNullOrEmpty(url))
+                if (new Regex(@"(?i)/.*\.[a-zA-Z]{3,}").IsMatch(url))
                 {
-                    if (new Regex(@"(?i)/.*\.[a-zA-Z]{3,}").IsMatch(url))
+                    string extension = url.Substring(url.LastIndexOf('.'));
+                    string fileName = url.Substring(url.LastIndexOf('/') + 1);
+                    string filePath = Path.Combine(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\"),
+                        fileName);
+                    string targetConvertDirPath =
+                        HttpContextHelper.MapPath(string.Format("\\{0}\\ConvertHtml", DocumentDirName));
+                    //目标文件路径
+                    var targetConvertFilePath =
+                        string.Format("{0}\\ConvertHtml\\{1}.htm", DocumentDirName, fileName);
+                    var targetPath = HttpContextHelper.MapPath("\\" + targetConvertFilePath);
+
+                    if (System.IO.File.Exists(HttpContextHelper.MapPath("\\" + targetConvertFilePath)))
                     {
-                        string extension = url.Substring(url.LastIndexOf('.'));
-                        string fileName = url.Substring(url.LastIndexOf('/') + 1);
-                        string filePath = Path.Combine(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\"),
-                            fileName);
-                        string targetConvertDirPath =
-                            HttpContextHelper.MapPath(string.Format("\\{0}\\ConvertHtml", DocumentDirName));
-                        //目标文件路径
-                        var targetConvertFilePath =
-                            string.Format("{0}\\ConvertHtml\\{1}.htm", DocumentDirName, fileName);
-                        var targetPath = HttpContextHelper.MapPath("\\" + targetConvertFilePath);
+                        #region 如果文件已存在
 
-                        if (System.IO.File.Exists(HttpContextHelper.MapPath("\\" + targetConvertFilePath)))
+                        Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
+                        string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
+                        string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
+                        Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
+                            (targetConvertFilePath).Replace("\\", "/").TrimStart('/'), url));
+
+                        #endregion
+                    }
+                    else
+                    {
+                        #region 第一步：下载文件
+
+                        try
                         {
-                            #region 如果文件已存在
+                            Uri address = new Uri(url);
+                            var client = _httpClientFactory.CreateClient();
+                            var stream = client.GetStreamAsync(address);
 
-                            Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
-                            string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
-                            string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
-                            Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
-                                (targetConvertFilePath).Replace("\\", "/").TrimStart('/'), url));
+                            FileDownSave(url, filePath);
+                            //return File(stream, "application/vnd.android.package-archive", Path.GetFileName(targetPath));
+
+                            //ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
+                            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
+                            //using (WebClient webClient = new WebClient())
+                            //{
+                            //    webClient.DownloadFile(url, filePath);
+                            //    //var stream = webClient.OpenRead(address);
+                            //    //using (StreamReader sr = new StreamReader(stream))
+                            //    //{
+                            //    //    var page = sr.ReadToEnd();
+                            //    //}
+                            //}
+
+
+                            //using (var webClient = new WebClient())
+                            //{
+                            //    if (!Directory.Exists(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\")))
+                            //    {
+                            //        Directory.CreateDirectory(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\"));
+                            //    }
+                            //    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                            //    webClient.DownloadFile(url, filePath);
+
+
+                            //}
+                        }
+                        catch (Exception ex)
+                        {
+                            ResponseMsg(false, ex.Message.ToString(CultureInfo.InvariantCulture));
+                        }
+
+                        #endregion
+
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            #region  第二步：转换文件
+
+                            string sourcePath = filePath;
+                            if (!Directory.Exists(targetConvertDirPath))
+                            {
+                                Directory.CreateDirectory(targetConvertDirPath);
+                            }
+
+                            if (System.IO.File.Exists(targetPath))
+                            {
+                                System.IO.File.Delete(targetPath);
+                            }
+
+                            //转换结果实例
+                            OfficeConverter.ConvertResult result=new OfficeConverter.ConvertResult();
+                            switch (extension.Replace(".", "").ToLower())
+                            {
+                                #region Word转换
+
+                                case "doc":
+                                case "docx":
+                                case "txt":
+                                case "csv":
+                                case "cs":
+                                case "wps":
+                                case "js":
+                                case "xml":
+                                case "config":
+                                    //result = OfficeConverter.WordToHtml(sourcePath, targetPath);
+
+                                    #region 使用Aspose.Words
+                                    //https://localhost:5001/Home/Index?url=https://web.njit.edu/~cpm3/CIS113/WCRjava_win.doc
+                                    Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                                    var doc = new Document(sourcePath, new LoadOptions { Encoding = Encoding.UTF8 });
+                                    doc.Save(targetPath);
+
+                                    result.IsSuccess= true;
+                                    #endregion
+                                    break;
+
+                                #endregion
+
+                                #region Excel转换
+
+                                case "xls":
+                                case "xlsx":
+                                case "et":
+                                    result = OfficeConverter.ExcelToHtml(sourcePath, targetPath);
+                                    break;
+
+                                #endregion
+
+                                #region PPT转换
+
+                                case "ppt":
+                                case "pptx":
+                                case "wpp":
+                                case "dps":
+
+                                    result = OfficeConverter.PptToHtml(sourcePath, targetPath);
+                                    break;
+
+                                #endregion
+
+                                #region 图片转换
+
+                                case "jpg":
+                                case "png":
+                                case "ico":
+                                case "gif":
+                                case "bmp":
+                                    result = OfficeConverter.ImageToHtml(sourcePath, targetPath);
+                                    break;
+
+                                #endregion
+
+                                #region 压缩包
+
+                                case "zip":
+                                case "rar":
+                                    result = OfficeConverter.ZipToHtml(sourcePath, targetPath);
+                                    break;
+
+                                #endregion
+
+                                default:
+                                    result = new OfficeConverter.ConvertResult
+                                    {
+                                        IsSuccess = false,
+                                        Message = "该文档类型不支持在线预览！"
+                                    };
+                                    break;
+                            }
+
+                            if (result.IsSuccess)
+                            {
+                                Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
+                                string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
+                                string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
+                                Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
+                                    (targetConvertFilePath).Replace("//", "/").TrimStart('/'), url));
+                            }
+                            else
+                            {
+                                ResponseMsg(false, "对不起，" + result.Message);
+                            }
 
                             #endregion
                         }
                         else
                         {
-                            #region 第一步：下载文件
-
-                            try
-                            {
-                                Uri address = new Uri(url);
-                                var client = _httpClientFactory.CreateClient();
-                                var stream = client.GetStreamAsync(address);
-
-                                FileDownSave(url, filePath);
-                                //return File(stream, "application/vnd.android.package-archive", Path.GetFileName(targetPath));
-
-                                //ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
-                                //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
-                                //using (WebClient webClient = new WebClient())
-                                //{
-                                //    webClient.DownloadFile(url, filePath);
-                                //    //var stream = webClient.OpenRead(address);
-                                //    //using (StreamReader sr = new StreamReader(stream))
-                                //    //{
-                                //    //    var page = sr.ReadToEnd();
-                                //    //}
-                                //}
-
-
-                                //using (var webClient = new WebClient())
-                                //{
-                                //    if (!Directory.Exists(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\")))
-                                //    {
-                                //        Directory.CreateDirectory(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\"));
-                                //    }
-                                //    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                                //    webClient.DownloadFile(url, filePath);
-
-
-                                //}
-                            }
-                            catch (Exception ex)
-                            {
-                                ResponseMsg(false, ex.Message.ToString(CultureInfo.InvariantCulture));
-                            }
-
-                            #endregion
-
-                            if (System.IO.File.Exists(filePath))
-                            {
-                                #region  第二步：转换文件
-
-                                string sourcePath = filePath;
-                                if (!Directory.Exists(targetConvertDirPath))
-                                {
-                                    Directory.CreateDirectory(targetConvertDirPath);
-                                }
-
-                                if (System.IO.File.Exists(targetPath))
-                                {
-                                    System.IO.File.Delete(targetPath);
-                                }
-
-                                OfficeConverter.ConvertResult result;
-                                switch (extension.Replace(".", "").ToLower())
-                                {
-                                    #region Word转换
-
-                                    case "doc":
-                                    case "docx":
-                                    case "txt":
-                                    case "csv":
-                                    case "cs":
-                                    case "wps":
-                                    case "js":
-                                    case "xml":
-                                    case "config":
-                                        result = OfficeConverter.WordToHtml(sourcePath, targetPath);
-                                        break;
-
-                                    #endregion
-
-                                    #region Excel转换
-
-                                    case "xls":
-                                    case "xlsx":
-                                    case "et":
-                                        result = OfficeConverter.ExcelToHtml(sourcePath, targetPath);
-                                        break;
-
-                                    #endregion
-
-                                    #region PPT转换
-
-                                    case "ppt":
-                                    case "pptx":
-                                    case "wpp":
-                                    case "dps":
-
-                                        result = OfficeConverter.PptToHtml(sourcePath, targetPath);
-                                        break;
-
-                                    #endregion
-
-                                    #region 图片转换
-
-                                    case "jpg":
-                                    case "png":
-                                    case "ico":
-                                    case "gif":
-                                    case "bmp":
-                                        result = OfficeConverter.ImageToHtml(sourcePath, targetPath);
-                                        break;
-
-                                    #endregion
-
-                                    #region 压缩包
-
-                                    case "zip":
-                                    case "rar":
-                                        result = OfficeConverter.ZipToHtml(sourcePath, targetPath);
-                                        break;
-
-                                    #endregion
-
-                                    default:
-                                        result = new OfficeConverter.ConvertResult
-                                        {
-                                            IsSuccess = false,
-                                            Message = "该文档类型不支持在线预览！"
-                                        };
-                                        break;
-                                }
-
-                                if (result.IsSuccess)
-                                {
-                                    Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
-                                    string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
-                                    string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
-                                    Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
-                                        (targetConvertFilePath).Replace("//", "/").TrimStart('/'), url));
-                                }
-                                else
-                                {
-                                    ResponseMsg(false, "对不起，" + result.Message);
-                                }
-
-                                #endregion
-                            }
-                            else
-                            {
-                                ResponseMsg(false, "对不起，文件下载失败，未找到对应文件！");
-                            }
+                            ResponseMsg(false, "对不起，文件下载失败，未找到对应文件！");
                         }
                     }
-                    else
-                    {
-                        ResponseMsg(false, "对不起，文件路径不正确！");
-                    }
+                }
+                else
+                {
+                    ResponseMsg(false, "对不起，文件路径不正确！");
                 }
             }
         }
