@@ -7,40 +7,43 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>文档预览</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="/style/common.css" rel="stylesheet" type="text/css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="/style/common.css" rel="stylesheet" type="text/css" />
     <script src="/Scripts/jquery-1.7.1.js" type="text/javascript"></script>
 </head>
+
 <body>
-<form id="form1">
-    <div class="guide" style="width: 90%">
-        <a href="@Url.Action("Index", "Home")">返回首页</a> &nbsp;<a href="@ViewBag.Source">下载文件</a>
-    </div>
-    <div class="main" style="width: 90%">
-        <iframe src="@ViewBag.Url" style="height: 500px; padding: 10px; width: 98%;" id="ifmEditPage"
+    <form id="form1">
+        <div class="guide" style="width: 90%">
+            <a href="@Url.Action("Index", "Home")">返回首页</a> &nbsp;<a href="@ViewBag.Source">下载文件</a>
+        </div>
+        <div class="main" style="width: 90%">
+            <iframe src="@ViewBag.Url" style="height: 500px; padding: 10px; width: 98%;" id="ifmEditPage"
                 marginheight="0" marginwidth="0" frameborder="0" height="0px" width="0px">
-        </iframe>
-    </div>
-</form>
+            </iframe>
+        </div>
+    </form>
 
-<script type="text/javascript">
-    function onload() {
-        var winHeight = $(window).height();
-        var winWidth = $(window).width();
-        var width = winWidth;
-        var height = winHeight - 90;
+    <script type="text/javascript">
+        function onload() {
+            var winHeight = $(window).height();
+            var winWidth = $(window).width();
+            var width = winWidth;
+            var height = winHeight - 90;
 
-        //$("#ifmEditPage").width(width);
-        $("#ifmEditPage").height(height);
-    }
+            //$("#ifmEditPage").width(width);
+            $("#ifmEditPage").height(height);
+        }
 
-    window.onresize = onload;
-    $(function() {
-        onload();
-    });
-</script>
+        window.onresize = onload;
+        $(function () {
+            onload();
+        });
+    </script>
 
 </body>
+
 </html>

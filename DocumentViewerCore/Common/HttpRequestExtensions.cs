@@ -15,13 +15,13 @@ namespace DocumentViewerCore.Common
             var currentUrl = UriHelper.BuildAbsolute(request.Scheme, request.Host, request.PathBase, request.Path, request.QueryString);
             var referrer = request.Headers["Referer"].FirstOrDefault();
 
-            bool isPost = string.Compare(request.Method, "POST",
-               StringComparison.CurrentCultureIgnoreCase) == 0;
-            if (referrer == null) return false;
+            bool isPost = string.Compare(request.Method, "POST", StringComparison.CurrentCultureIgnoreCase) == 0;
+            if (referrer == null)
+            {
+                return false;
+            }
 
-            bool isSameUrl = string.Compare(currentUrl,
-               referrer,
-               StringComparison.CurrentCultureIgnoreCase) == 0;
+            bool isSameUrl = string.Compare(currentUrl, referrer, StringComparison.CurrentCultureIgnoreCase) == 0;
 
             return isPost && isSameUrl;
         }

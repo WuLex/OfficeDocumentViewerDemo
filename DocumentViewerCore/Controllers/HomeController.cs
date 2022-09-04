@@ -1,26 +1,12 @@
-﻿using DocumentViewerCore.Models;
+﻿using Aspose.Words;
+using DocumentViewerCore.Common;
+using DocumentViewerCore.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using DocumentViewerCore.Common;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
-using System.Security;
-using System.Net.Security;
-using System.Security.Authentication;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using Aspose.Words;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DocumentViewerCore.Controllers
 {
@@ -54,7 +40,7 @@ namespace DocumentViewerCore.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         protected void Load()
@@ -85,7 +71,7 @@ namespace DocumentViewerCore.Controllers
                         Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
                             (targetConvertFilePath).Replace("\\", "/").TrimStart('/'), url));
 
-                        #endregion
+                        #endregion 如果文件已存在
                     }
                     else
                     {
@@ -112,7 +98,6 @@ namespace DocumentViewerCore.Controllers
                             //    //}
                             //}
 
-
                             //using (var webClient = new WebClient())
                             //{
                             //    if (!Directory.Exists(HttpContextHelper.MapPath("\\" + DocumentDirName + "\\")))
@@ -122,7 +107,6 @@ namespace DocumentViewerCore.Controllers
                             //    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                             //    webClient.DownloadFile(url, filePath);
 
-
                             //}
                         }
                         catch (Exception ex)
@@ -130,11 +114,11 @@ namespace DocumentViewerCore.Controllers
                             ResponseMsg(false, ex.Message.ToString(CultureInfo.InvariantCulture));
                         }
 
-                        #endregion
+                        #endregion 第一步：下载文件
 
                         if (System.IO.File.Exists(filePath))
                         {
-                            #region  第二步：转换文件
+                            #region 第二步：转换文件
 
                             string sourcePath = filePath;
                             if (!Directory.Exists(targetConvertDirPath))
@@ -148,7 +132,7 @@ namespace DocumentViewerCore.Controllers
                             }
 
                             //转换结果实例
-                            OfficeConverter.ConvertResult result=new OfficeConverter.ConvertResult();
+                            OfficeConverter.ConvertResult result = new OfficeConverter.ConvertResult();
                             switch (extension.Replace(".", "").ToLower())
                             {
                                 #region Word转换
@@ -165,16 +149,19 @@ namespace DocumentViewerCore.Controllers
                                     //result = OfficeConverter.WordToHtml(sourcePath, targetPath);
 
                                     #region 使用Aspose.Words
+
                                     //https://localhost:5001/Home/Index?url=https://web.njit.edu/~cpm3/CIS113/WCRjava_win.doc
                                     Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                                     var doc = new Document(sourcePath, new LoadOptions { Encoding = Encoding.UTF8 });
                                     doc.Save(targetPath);
 
-                                    result.IsSuccess= true;
-                                    #endregion
+                                    result.IsSuccess = true;
+
+                                    #endregion 使用Aspose.Words
+
                                     break;
 
-                                #endregion
+                                #endregion Word转换
 
                                 #region Excel转换
 
@@ -184,7 +171,7 @@ namespace DocumentViewerCore.Controllers
                                     result = OfficeConverter.ExcelToHtml(sourcePath, targetPath);
                                     break;
 
-                                #endregion
+                                #endregion Excel转换
 
                                 #region PPT转换
 
@@ -196,7 +183,7 @@ namespace DocumentViewerCore.Controllers
                                     result = OfficeConverter.PptToHtml(sourcePath, targetPath);
                                     break;
 
-                                #endregion
+                                #endregion PPT转换
 
                                 #region 图片转换
 
@@ -208,7 +195,7 @@ namespace DocumentViewerCore.Controllers
                                     result = OfficeConverter.ImageToHtml(sourcePath, targetPath);
                                     break;
 
-                                #endregion
+                                #endregion 图片转换
 
                                 #region 压缩包
 
@@ -217,7 +204,7 @@ namespace DocumentViewerCore.Controllers
                                     result = OfficeConverter.ZipToHtml(sourcePath, targetPath);
                                     break;
 
-                                #endregion
+                                #endregion 压缩包
 
                                 default:
                                     result = new OfficeConverter.ConvertResult
@@ -241,7 +228,7 @@ namespace DocumentViewerCore.Controllers
                                 ResponseMsg(false, "对不起，" + result.Message);
                             }
 
-                            #endregion
+                            #endregion 第二步：转换文件
                         }
                         else
                         {

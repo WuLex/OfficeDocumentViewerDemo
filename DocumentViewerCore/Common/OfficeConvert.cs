@@ -14,8 +14,6 @@ using NetOffice.PowerPointApi;
 using NetOffice.PowerPointApi.Enums;
 using NetOffice.WordApi;
 using NetOffice.WordApi.Enums;
-//using Microsoft.Office.Core;
-
 
 namespace DocumentViewerCore.Common
 {
@@ -24,7 +22,7 @@ namespace DocumentViewerCore.Common
     /// </summary>
     public class OfficeConverter
     {
-        #region LogCategory enum
+        #region 枚举
 
         public enum LogCategory
         {
@@ -114,8 +112,8 @@ namespace DocumentViewerCore.Common
                 var targetDirPath =
                     new DirectoryInfo(string.Format("{0}\\{1}", Path.GetDirectoryName(targetPath), sourceFile.Name));
                 const string template =
-                    @"<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
-                        <html xmlns='http://www.w3.org/1999/xhtml'>
+                    @"<!DOCTYPE html>
+                        <html>
                         <meta http-equiv=Content-Type content='text/html; charset=gbk'>
                         {0}
                         <head>
@@ -160,8 +158,8 @@ namespace DocumentViewerCore.Common
             {
                 var file = new FileInfo(sourcePath);
                 const string htmlTemplate =
-                    @"<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
-                                           <html xmlns='http://www.w3.org/1999/xhtml'>
+                    @"<!DOCTYPE html>
+                                           <html>
                                            <meta http-equiv=Content-Type content='text/html; charset=gbk'>
                                            {0}
                                             <head>
@@ -284,8 +282,8 @@ namespace DocumentViewerCore.Common
                     #region 第三步：组装Html页面
 
                     const string template =
-                        @"<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
-                                           <html xmlns='http://www.w3.org/1999/xhtml'>
+                        @"<!DOCTYPE html>
+                                           <html>
                                            <meta http-equiv=Content-Type content='text/html; charset=gbk'> 
                                             {0}
                                             <head>
