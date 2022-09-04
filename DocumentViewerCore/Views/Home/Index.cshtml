@@ -6,8 +6,6 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>*@
-
-
 <!DOCTYPE html>
 <html>
 
@@ -39,7 +37,7 @@
 
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <div class="input-group-text">文档地址:</div>
+                            <div class="input-group-text">Office文档Url地址:</div>
                         </div>
                         <input type="text" class="form-control" id="txtUrl" value="">
                         @* <label for="txtUrl" class="col-2 col-form-label">文档地址:</label>*@
@@ -51,11 +49,32 @@
             </div>
         </div>
     </form>
+
+    @section Scripts {
     <script>
+        $(function () {
+            $("#btnPreview").click(function () {
+                var urlstr = $("#txtUrl").val();
+                if (urlstr == "") {
+                    alert("请填写网址");
+                    return false;
+                }
+                else {
+                    //JS 正则匹配 URL
+                    //var regexp = /((http|https):\/\/([\w\-]+\.)+[\w\-]+(\/[\w\u4e00-\u9fa5\-\.\/?\@@\%\!\&=\+\~\:\#\;\,]*)?)/ig;
+                    var reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@@?^=%&amp;:/~\+#]*[\w\-\@@?^=%&amp;/~\+#])?/;
+                    if (!reg.test(urlstr)) {
+                        alert("请填写正确的网址");
+                    }
+                    else {
+                        window.location.href = "/Home/Index?url=" + urlstr;
+                    }
+                }
 
-
-
+            });
+        });
     </script>
+    }
 </body>
 
 </html>
