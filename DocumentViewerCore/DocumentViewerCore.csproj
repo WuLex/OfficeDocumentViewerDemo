@@ -1,13 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+	  <Nullable>enable</Nullable>
+	 <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="dll\Microsoft.Office.Interop.Excel.dll" />
     <None Remove="dll\Microsoft.Office.Interop.PowerPoint.dll" />
     <None Remove="dll\Microsoft.Office.Interop.Word.dll" />
+    <None Remove="Program.cs_net5" />
+    <None Remove="Startup.cs_net5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Program.cs_net5" />
+    <Compile Include="Startup.cs_net5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,20 +31,28 @@
     <PackageReference Include="NetOffice.Excel" Version="1.7.4.11" />
     <PackageReference Include="NetOffice.PowerPoint" Version="1.7.4.11" />
     <PackageReference Include="NetOffice.Word" Version="1.7.4.11" />
-    <PackageReference Include="SharpZipLib" Version="1.3.2" />
+    <PackageReference Include="SharpZipLib" Version="1.3.3" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Aspose.Cells">
+      <HintPath>dll\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Pdf">
+      <HintPath>dll\Aspose.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words">
+      <HintPath>dll\Aspose.Words.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="dll\Microsoft.Office.Interop.PowerPoint.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="dll\ICSharpCode.SharpZipLib.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
