@@ -1,4 +1,5 @@
-﻿using Aspose.Words;
+﻿using Aspose.Cells;
+using Aspose.Words;
 using DocumentViewerCore.Common;
 using DocumentViewerCore.Models;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -7,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using LoadOptions = Aspose.Words.LoadOptions;
 
 namespace DocumentViewerCore.Controllers
 {
@@ -26,7 +28,10 @@ namespace DocumentViewerCore.Controllers
 
         public IActionResult Index(string url)
         {
-            Load();
+            if (!string.IsNullOrEmpty(url))
+            {
+                Load();
+            }
             return View();
         }
 
@@ -68,8 +73,11 @@ namespace DocumentViewerCore.Controllers
                         Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
                         string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
                         string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
-                        Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
-                            (targetConvertFilePath).Replace("\\", "/").TrimStart('/'), url));
+
+                        var redirectUrl = string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
+                            (targetConvertFilePath).Replace("\\", "/").TrimStart('/'), url);
+                       
+                        Response.Redirect(redirectUrl);
 
                         #endregion 如果文件已存在
                     }
@@ -168,7 +176,10 @@ namespace DocumentViewerCore.Controllers
                                 case "xls":
                                 case "xlsx":
                                 case "et":
-                                    result = OfficeConverter.ExcelToHtml(sourcePath, targetPath);
+                                    //result = OfficeConverter.ExcelToHtml(sourcePath, targetPath);
+                                    Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                                    new Workbook(sourcePath).Save(targetPath);
+                                    result.IsSuccess = true;
                                     break;
 
                                 #endregion Excel转换
@@ -192,6 +203,7 @@ namespace DocumentViewerCore.Controllers
                                 case "ico":
                                 case "gif":
                                 case "bmp":
+                                case "webp":
                                     result = OfficeConverter.ImageToHtml(sourcePath, targetPath);
                                     break;
 
@@ -220,8 +232,8 @@ namespace DocumentViewerCore.Controllers
                                 Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
                                 string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
                                 string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
-                                Response.Redirect(string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
-                                    (targetConvertFilePath).Replace("//", "/").TrimStart('/'), url));
+                                var redirectUrl = string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,targetConvertFilePath.Replace("\\", "/").TrimStart('/'), url);
+                                Response.Redirect(redirectUrl);
                             }
                             else
                             {

@@ -167,7 +167,7 @@ namespace DocumentViewerCore.Common
                                             </head>
                                             <body>
                                                 <div class='file_content'>
-                                                    <img class='file_image' src='{1}' />
+                                                    <img class='file_image' src='../{1}' />
                                                 </div>
                                             </body>
                                           </html>";
@@ -336,7 +336,7 @@ namespace DocumentViewerCore.Common
         /// <param name="content"></param> 
         public static void Log(string title, string content)
         {
-            var logPath = HttpContextHelper.MapPath("~/log.txt");
+            var logPath = HttpContextHelper.MapPath("\\log.txt");
             using (StreamWriter w = File.AppendText(logPath))
             {
                 w.WriteLine("# " + DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss ") + content);

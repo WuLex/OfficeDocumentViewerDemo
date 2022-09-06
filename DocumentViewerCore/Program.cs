@@ -1,5 +1,6 @@
 using DocumentViewerCore.Common;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,10 @@ else
     app.UseDeveloperExceptionPage();
 }
 
+//◊¢≤·±‡¬ÎÃ·π©≥Ã–Ú
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+//≈‰÷√Http
 HttpContextHelper.Configure(app.Services.GetRequiredService<IHttpContextAccessor>());
 HttpContextHelper.Configure(app.Services.GetRequiredService<IWebHostEnvironment>());
 
