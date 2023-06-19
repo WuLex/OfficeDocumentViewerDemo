@@ -10,63 +10,61 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Office文档在线预览</title>
-    <link href="/style/common.css" rel="stylesheet" type="text/css" />
+    <link href="/style/common.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
-    <form id="form1" class="form-row">
-        <div class="guide">
-            <h3>
-                Office文档在线预览
-            </h3>
-        </div>
-        <div class="main">
-            <div class="jumbotron jumbotron-fluid">
-                <div class="container">
-                    <h1 class="display-4"></h1>
-                    <p class="lead">
-                        使用说明：请在网站地址后，用url参数传入您想预览的文件路径。<br />
-                        如：/Home/Index<span style="color: red">?url=https://web.java.edu/CIS/java_win.doc</span>
-                    </p>
-                </div>
+<form id="form1" class="form-row">
+    <div class="guide">
+        <h3>
+            Office文档在线预览
+        </h3>
+    </div>
+    <div class="main">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4"></h1>
+                <p class="lead">
+                    使用说明：请在网站地址后，用url参数传入您想预览的文件路径。<br/>
+                    如：/Home/Index<span style="color: red">?url=https://web.java.edu/CIS/java_win.doc</span>
+                </p>
             </div>
-            <div class="form-row">
-                <div class="col-md-10">
+        </div>
+        <div class="form-row">
+            <div class="col-md-10">
 
-                    <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Office文档Url地址:</div>
-                        </div>
-                        <input type="text" class="form-control" id="txtUrl" value="">
-                        @* <label for="txtUrl" class="col-2 col-form-label">文档地址:</label>*@
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Office文档Url地址:</div>
                     </div>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" id="btnPreview" class="btn btn-primary mb-2">预览</button>
+                    <input type="text" class="form-control" id="txtUrl" value="">
+                    @* <label for="txtUrl" class="col-2 col-form-label">文档地址:</label>*@
                 </div>
             </div>
+            <div class="col-md-2">
+                <button type="button" id="btnPreview" class="btn btn-primary mb-2">预览</button>
+            </div>
         </div>
-    </form>
+    </div>
+</form>
 
-    @section Scripts {
+@section Scripts {
     <script>
-        $(function () {
-            $("#btnPreview").click(function () {
+        $(function() {
+            $("#btnPreview").click(function() {
                 var urlstr = $("#txtUrl").val();
                 if (urlstr == "") {
                     alert("请填写网址");
                     return false;
-                }
-                else {
+                } else {
                     //JS 正则匹配 URL
                     //var regexp = /((http|https):\/\/([\w\-]+\.)+[\w\-]+(\/[\w\u4e00-\u9fa5\-\.\/?\@@\%\!\&=\+\~\:\#\;\,]*)?)/ig;
                     var reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@@?^=%&amp;:/~\+#]*[\w\-\@@?^=%&amp;/~\+#])?/;
                     if (!reg.test(urlstr)) {
                         alert("请填写正确的网址");
-                    }
-                    else {
+                    } else {
                         window.location.href = "/Home/Index?url=" + urlstr;
                     }
                 }
@@ -74,7 +72,8 @@
             });
         });
     </script>
-    }
+}
+
 </body>
 
 </html>

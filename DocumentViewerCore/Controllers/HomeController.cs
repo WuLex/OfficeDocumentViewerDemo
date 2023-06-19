@@ -32,6 +32,7 @@ namespace DocumentViewerCore.Controllers
             {
                 Load();
             }
+
             return View();
         }
 
@@ -76,7 +77,7 @@ namespace DocumentViewerCore.Controllers
 
                         var redirectUrl = string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
                             (targetConvertFilePath).Replace("\\", "/").TrimStart('/'), url);
-                       
+
                         Response.Redirect(redirectUrl);
 
                         #endregion 如果文件已存在
@@ -232,7 +233,8 @@ namespace DocumentViewerCore.Controllers
                                 Uri uri = new Uri(HttpContextHelper.Current.Request.GetDisplayUrl());
                                 string port = uri.Port == 80 ? string.Empty : ":" + uri.Port;
                                 string webUrl = string.Format("{0}://{1}{2}/", uri.Scheme, uri.Host, port);
-                                var redirectUrl = string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,targetConvertFilePath.Replace("\\", "/").TrimStart('/'), url);
+                                var redirectUrl = string.Format("/Home/Preview?url={0}{1}&source={2}", webUrl,
+                                    targetConvertFilePath.Replace("\\", "/").TrimStart('/'), url);
                                 Response.Redirect(redirectUrl);
                             }
                             else

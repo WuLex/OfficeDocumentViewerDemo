@@ -26,16 +26,12 @@ namespace DocumentViewerCore.Common
 
         public static Microsoft.AspNetCore.Http.HttpContext Current
         {
-            get
-            {
-                return m_httpContextAccessor.HttpContext;
-            }
+            get { return m_httpContextAccessor.HttpContext; }
         }
 
         public static string MapPath(string path)
         {
-            return Path.Combine(_wevHostEnviroment.WebRootPath + path,"");
+            return Path.Combine(_wevHostEnviroment.WebRootPath + path, "");
         }
-       
     }
 }

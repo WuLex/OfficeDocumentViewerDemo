@@ -55,12 +55,12 @@ namespace DocumentViewerCore.Common
                 currentDoc.Close();
                 wordApp.Quit();
                 ChanageCharset(targetPath);
-                return new ConvertResult {IsSuccess = true, Message = targetPath};
+                return new ConvertResult { IsSuccess = true, Message = targetPath };
             }
             catch (Exception ex)
             {
                 Log("转换Word文档成Html文档时异常", ex.Message + ex.StackTrace);
-                return new ConvertResult {IsSuccess = false, Message = ex.Message + ex.StackTrace};
+                return new ConvertResult { IsSuccess = false, Message = ex.Message + ex.StackTrace };
             }
         }
 
@@ -80,12 +80,12 @@ namespace DocumentViewerCore.Common
                 workbook.Close();
                 excelApp.Quit();
                 ChanageCharset(targetPath);
-                return new ConvertResult {IsSuccess = true, Message = targetPath};
+                return new ConvertResult { IsSuccess = true, Message = targetPath };
             }
             catch (Exception ex)
             {
                 Log("转换Excel文档成Html文档时异常", ex.Message + ex.StackTrace);
-                return new ConvertResult {IsSuccess = false, Message = ex.Message + ex.StackTrace};
+                return new ConvertResult { IsSuccess = false, Message = ex.Message + ex.StackTrace };
             }
         }
 
@@ -103,7 +103,8 @@ namespace DocumentViewerCore.Common
 
                 var sourceFile = new FileInfo(sourcePath);
                 var powerPoint = new NetOffice.PowerPointApi.Application();
-                Presentation open = powerPoint.Presentations.Open(sourcePath, MsoTriState.msoTrue,  MsoTriState.msoFalse, MsoTriState.msoFalse);
+                Presentation open = powerPoint.Presentations.Open(sourcePath, MsoTriState.msoTrue, MsoTriState.msoFalse,
+                    MsoTriState.msoFalse);
 
                 //注意：有些版本的PowerPoint(如：Office 2013 Professional)不能保存为Html，
                 //所以，先保存为图片，再由图片组成一个Html页面来预览
@@ -135,14 +136,14 @@ namespace DocumentViewerCore.Common
                 WriteFile(targetPath, string.Format(template, CommonFileInclude, sourceFile, images));
                 open.Close();
                 powerPoint.Quit();
-                return new ConvertResult {IsSuccess = true, Message = targetPath};
+                return new ConvertResult { IsSuccess = true, Message = targetPath };
 
                 #endregion
             }
             catch (Exception ex)
             {
                 Log("转换PPT文档成Html文档时异常", ex.Message + ex.StackTrace);
-                return new ConvertResult {IsSuccess = false, Message = ex.Message + ex.StackTrace};
+                return new ConvertResult { IsSuccess = false, Message = ex.Message + ex.StackTrace };
             }
         }
 
@@ -173,12 +174,12 @@ namespace DocumentViewerCore.Common
                                           </html>";
                 string content = string.Format(htmlTemplate, CommonFileInclude, file.Name);
                 WriteFile(targetPath, content);
-                return new ConvertResult {IsSuccess = true, Message = targetPath};
+                return new ConvertResult { IsSuccess = true, Message = targetPath };
             }
             catch (Exception ex)
             {
                 Log("转换PPT文档成Html文档时异常", ex.Message + ex.StackTrace);
-                return new ConvertResult {IsSuccess = false, Message = ex.Message + ex.StackTrace};
+                return new ConvertResult { IsSuccess = false, Message = ex.Message + ex.StackTrace };
             }
         }
 
@@ -314,17 +315,17 @@ namespace DocumentViewerCore.Common
 
                     string content = string.Format(template, CommonFileInclude, inputFile.Name, fileHtml);
                     WriteFile(targetPath, content);
-                    return new ConvertResult {IsSuccess = true, Message = targetPath};
+                    return new ConvertResult { IsSuccess = true, Message = targetPath };
 
                     #endregion
                 }
 
-                return new ConvertResult {IsSuccess = false, Message = "压缩包内无任何可预览的文件！"};
+                return new ConvertResult { IsSuccess = false, Message = "压缩包内无任何可预览的文件！" };
             }
             catch (Exception ex)
             {
                 Log("转换Rar文档成Html文档时异常", ex.Message + ex.StackTrace);
-                return new ConvertResult {IsSuccess = false, Message = ex.Message + ex.StackTrace};
+                return new ConvertResult { IsSuccess = false, Message = ex.Message + ex.StackTrace };
             }
         }
 
